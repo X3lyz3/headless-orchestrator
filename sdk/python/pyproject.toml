@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "headless-orchestrator-sdk"
+version = "0.1.0"
+description = "Python SDK for Headless Browser Orchestrator"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+	{ name = "Headless Orchestrator Team" }
+]
+dependencies = [
+	"websockets>=12,<14"
+]
+
+[project.optional-dependencies]
+dev = [
+	"pytest>=8.3",
+	"pytest-asyncio>=0.24"
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["client"]

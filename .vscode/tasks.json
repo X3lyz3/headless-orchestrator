@@ -1,0 +1,66 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "cargo check",
+			"type": "shell",
+			"command": "cargo",
+			"args": [
+				"check",
+				"--manifest-path",
+				"core/Cargo.toml"
+			],
+			"group": "build"
+		},
+		{
+			"label": "cargo run",
+			"type": "shell",
+			"command": "cargo",
+			"args": [
+				"run",
+				"--manifest-path",
+				"core/Cargo.toml"
+			],
+			"group": "build"
+		},
+		{
+			"label": "pytest",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"-m",
+				"pytest",
+				"-q",
+				"-c",
+				"sdk/python/pyproject.toml",
+				"sdk/python/tests"
+			],
+			"group": "test"
+		},
+		{
+			"label": "cargo check (verify paths)",
+			"type": "shell",
+			"command": "cargo",
+			"args": [
+				"check",
+				"--manifest-path",
+				"core/Cargo.toml"
+			],
+			"group": "build"
+		},
+		{
+			"label": "pytest (verify paths)",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"-m",
+				"pytest",
+				"-q",
+				"-c",
+				"sdk/python/pyproject.toml",
+				"sdk/python/tests"
+			],
+			"group": "test"
+		}
+	]
+}
