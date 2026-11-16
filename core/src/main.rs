@@ -75,7 +75,7 @@ fn load_api_config() -> Result<ApiConfig> {
 }
 
 fn load_browser_config() -> Result<BrowserConfig> {
-    let chromium_path = env::var("ORCH_CHROMIUM_PATH").unwrap_or_else(|_| "chrome".to_string());
+    let chromium_path = env::var("ORCH_CHROMIUM_PATH").unwrap_or_else(|_| default_chromium_path());
     let session_root = env::var("ORCH_SESSION_ROOT")
         .map(PathBuf::from)
         .unwrap_or_else(|_| PathBuf::from("./.orchestrator-sessions"));
@@ -115,4 +115,62 @@ fn parse_env_usize(key: &str, default: usize) -> Result<usize> {
             .with_context(|| format!("{key} must be usize")),
         Err(_) => Ok(default),
     }
+}
+
+fn default_chromium_path() -> String {
+    if cfg!(target_os = "windows") {
+        let mut candidates: Vec<PathBuf> = Vec::new();
+
+        if let Ok(program_files) = env::var("ProgramFiles") {
+            candidates.push(
+                PathBuf::from(&program_files)
+                    .join("Google")
+                    .join("Chrome")
+                    .join("Application")
+                    .join("chrome.exe"),
+            );
+            candidates.push(
+                PathBuf::from(&program_files)
+                    .join("Microsoft")
+                    .join("Edge")
+                    .join("Application")
+                    .join("msedge.exe"),
+            );
+        }
+
+        if let Ok(program_files_x86) = env::var("ProgramFiles(x86)") {
+            candidates.push(
+                PathBuf::from(&program_files_x86)
+                    .join("Google")
+                    .join("Chrome")
+                    .join("Application")
+                    .join("chrome.exe"),
+            );
+            candidates.push(
+                PathBuf::from(&program_files_x86)
+                    .join("Microsoft")
+                    .join("Edge")
+                    .join("Application")
+                    .join("msedge.exe"),
+            );
+        }
+
+        if let Ok(local_app_data) = env::var("LOCALAPPDATA") {
+            candidates.push(
+                PathBuf::from(&local_app_data)
+                    .join("Google")
+                    .join("Chrome")
+                    .join("Application")
+                    .join("chrome.exe"),
+            );
+        }
+
+        for candidate in candidates {
+            if candidate.exists() {
+                return candidate.display().to_string();
+            }
+        }
+    }
+
+    "chrome".to_string()
 }
