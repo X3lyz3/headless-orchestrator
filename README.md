@@ -89,11 +89,9 @@ Key ideas:
 ### Option 1: clone with Git (recommended)
 
 ```bash
-git clone https://github.com/<your-username>/<your-repository>.git
-cd <your-repository>
+git clone https://github.com/X3lyz3/headless-orchestrator.git
+cd headless-orchestrator
 ```
-
-Replace `<your-username>/<your-repository>` with the real address of this repository.
 
 ### Option 2: download a ZIP archive
 

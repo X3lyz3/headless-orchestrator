@@ -13,8 +13,8 @@ An asynchronous Python client for the Headless Browser Orchestrator (the Rust co
 If you have not downloaded the project yet:
 
 ```bash
-git clone https://github.com/<your-username>/<your-repository>.git
-cd <your-repository>/sdk/python
+git clone https://github.com/X3lyz3/headless-orchestrator.git
+cd headless-orchestrator/sdk/python
 ```
 
 Or download the ZIP from GitHub (**Code → Download ZIP**), unpack it and open `sdk/python`.
