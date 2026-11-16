@@ -598,10 +598,18 @@ impl BrowserManager {
     }
 
     async fn cleanup_dir(&self, dir: &Path) {
-        if let Err(err) = tokio::fs::remove_dir_all(dir).await {
-            warn!(path = %dir.display(), error = %err, "failed to cleanup directory");
+            for attempt in 1..=5 {
+                match tokio::fs::remove_dir_all(dir).await {
+                    Ok(()) => return,
+                    Err(err) if attempt < 5 => {
+                        sleep(Duration::from_millis(150 * attempt)).await;
+                    }
+                    Err(err) => {
+                        warn!(path = %dir.display(), error = %err, "failed to cleanup directory after retries");
+                    }
+                }
+            }
         }
-    }
 }
 
 fn extract_ws_endpoint(line: &str) -> Option<String> {
