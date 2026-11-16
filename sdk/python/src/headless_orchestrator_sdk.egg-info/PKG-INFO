@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: headless-orchestrator-sdk
+Version: 0.1.0
+Summary: Python SDK for Headless Browser Orchestrator
+Author: Headless Orchestrator Team
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: websockets<14,>=12
+Provides-Extra: dev
+Requires-Dist: pytest>=8.3; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.24; extra == "dev"
+
+# Headless Orchestrator Python SDK
+
+Асинхронний Python SDK для взаємодії з Rust-оркестратором через WebSocket.
+
+## Встановлення
+
+```powershell
+python -m pip install -e .[dev]
+```
+
+## Мінімальний приклад
+
+```python
+import asyncio
+from client import ClientConfig, OrchestratorClient
+
+
+async def main() -> None:
+    cfg = ClientConfig(url="ws://127.0.0.1:9001", api_key="dev-api-key")
+    async with OrchestratorClient(cfg) as client:
+        print(await client.health_ping())
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```

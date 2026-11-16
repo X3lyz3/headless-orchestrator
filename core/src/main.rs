@@ -76,9 +76,17 @@ fn load_api_config() -> Result<ApiConfig> {
 
 fn load_browser_config() -> Result<BrowserConfig> {
     let chromium_path = env::var("ORCH_CHROMIUM_PATH").unwrap_or_else(|_| default_chromium_path());
-    let session_root = env::var("ORCH_SESSION_ROOT")
-        .map(PathBuf::from)
-        .unwrap_or_else(|_| PathBuf::from("./.orchestrator-sessions"));
+    let raw_session_root = env::var("ORCH_SESSION_ROOT")
+            .map(PathBuf::from)
+            .unwrap_or_else(|_| PathBuf::from("./.orchestrator-sessions"));
+
+        let session_root = if raw_session_root.is_absolute() {
+            raw_session_root
+        } else {
+            env::current_dir()
+                .unwrap_or_else(|_| PathBuf::from("."))
+                .join(raw_session_root)
+        };
 
     let launch_timeout_ms = parse_env_u64("ORCH_LAUNCH_TIMEOUT_MS", 15_000)?;
     let graceful_timeout_ms = parse_env_u64("ORCH_GRACEFUL_SHUTDOWN_TIMEOUT_MS", 5_000)?;
