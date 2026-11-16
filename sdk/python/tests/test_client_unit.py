@@ -1,4 +1,5 @@
 import json
+from typing import Any, cast
 
 import pytest
 
@@ -29,7 +30,7 @@ async def test_send_command_maps_server_error() -> None:
                 }
             )
 
-    client._ws = FakeWS()  # type: ignore[assignment]
+    client._ws = cast(Any, FakeWS())
 
     with pytest.raises(ProtocolError):
         await client.send_command("health.ping", {})
@@ -61,7 +62,7 @@ async def test_send_command_raises_command_error_with_matching_id(monkeypatch: p
                 }
             )
 
-    client._ws = FakeWS()  # type: ignore[assignment]
+    client._ws = cast(Any, FakeWS())
 
     with pytest.raises(CommandError):
         await client.send_command("health.ping", {})
